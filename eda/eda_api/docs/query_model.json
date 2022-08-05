@@ -33,7 +33,7 @@
             { 
                 "filter_table": "table_1",
                 "filter_column":"customer_id" ,
-                "filter_type": "=" ,// pot ser =, !=,>, <  
+                "filter_type": "=" ,// This can be =, !=,>, <  
                 "filter_elements": []
             }
         ] 
