@@ -4,7 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const roles = {
     values: ['EDA_ADMIN_ROLE', 'EDA_USER_ROLE'],
-    message: '{VALUE} no es un role permitido'
+    message: '{VALUE} it is not an allowed role'
 };
 
 
@@ -18,14 +18,14 @@ export interface IUser extends mongoose.Document {
 
 
 const UserSchema = new mongoose.Schema({
-    name: { type: String, required: [true, 'El nombre es necesario'] },
-    email: { type: String, unique: true, required: [true, 'El mail es necesario'] },
-    password: { type: String, required: [true, 'La contraseña es necesaria'] },
+    name: { type: String, required: [true, 'Name is required'] },
+    email: { type: String, unique: true, required: [true, 'The email is required'] },
+    password: { type: String, required: [true, 'Password is required'] },
     img: { type: String, required: false },
     role: [{ type: mongoose.Types.ObjectId, ref: 'Group' }],
 }, { collection: 'users', strict: false });
 
-UserSchema.plugin(uniqueValidator, { message: 'Ya existe un usuario con este {PATH}' });
+UserSchema.plugin(uniqueValidator, { message: 'There is already a user with this {PATH}' });
 
 export default mongoose.model<IUser>('User', UserSchema);
 
