@@ -14,18 +14,18 @@
             { 
                 "table_name": "table_1",
                 "column_name":"customer_id" ,
-                "aggregation_type": "note", // pot ser none, sum, max, avg
+                "aggregation_type": "note", // This can be none, sum, max, avg
                 "order":1
             },
             {   "table_name": "table_2",
                 "column_name":"column2" ,
-                "aggregation_type": "note", // pot ser none, sum, max, avg
+                "aggregation_type": "note", // This can be none, sum, max, avg
                 "order":2
               },
               { 
                 "table_name": "table_2",
                 "column_name":"salesvalue" ,
-                "aggregation_type": "sum", // pot ser none, sum, max, avg
+                "aggregation_type": "sum", // This can be none, sum, max, avg
                 "order":3
               }
         ] ,
