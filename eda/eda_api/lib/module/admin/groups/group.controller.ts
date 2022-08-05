@@ -91,7 +91,7 @@ export class GroupController {
         console.log(grp + ' Created')
     }
 
-    // BORRO LOS GRUPOS QUE NO ESTAN EN EL AD Y QUE SI QUE ESTAN EN EL MONGO MENOS ADMIN Y RO.....
+    // I DELETE THE GROUPS THAT ARE NOT IN THE AD AND THAT ARE IN THE MONGO LESS ADMIN AND RO.....
     let adGroups = groupsAD.map( g=> {return g.name;});
 
     let groupsToDelete =  localGroups.filter(function (item) {
@@ -102,7 +102,7 @@ export class GroupController {
     if (  groupsToDelete.indexOf('ADMIN') > -1) {
       groupsToDelete.splice(groupsToDelete.indexOf('ADMIN'), 1);
     }
-    // ADMIN Y READ ONLY S'HA DE DEIXAR...
+    // ADMIN MUST BE LEFT TO READ ONLY...
     groupsToDelete = groupsToDelete.filter(item => item !== 'ADMIN');
     groupsToDelete = groupsToDelete.filter(item => item !== 'RO');
 
@@ -114,7 +114,7 @@ export class GroupController {
   }
 
 
-  /** Retorna els ids locals del llistat de nomps de grupos proporcionats */
+  /** Returns the local ids from the list of provided group names */
   static async getLocalGroupsIds ( groups: string[] ){
     const localGroups =   await Group.find( ).exec();
     const res = <any>[] ;
@@ -194,12 +194,12 @@ export class GroupController {
             return next(new HttpException(500, 'Error updating the group'))
           }
 
-          // Borrem de tots els usuaris el grup actualitzat
+          // We delete the updated group from all users
           await User.updateMany(
             {},
             { $pull: { role: { $in: [req.params.id] } } }
           )
-          // Introduim de nou als usuaris seleccionat el grup actualitzat
+          // We reintroduce the updated group to the selected users
           await User.updateMany(
             { _id: { $in: body.users } },
             { $push: { role: req.params.id } }
@@ -243,7 +243,7 @@ export class GroupController {
   }
 
   /**
-   * Esta función borra un grupo que ya no está en el Active Directory
+   * This function deletes a group that is no longer in the Active Directory
    */
   static async deleteGroupFromAD ( grupo:string ) {
     
