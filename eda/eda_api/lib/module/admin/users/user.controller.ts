@@ -25,12 +25,12 @@ export class UserController {
 
             insertServerLog(req, 'info', 'newLogin', body.email, 'attempt');
 
-            // Busca artxiu de configuracio activedirectory
+            // Look for activedirectory configuration file
             const ldapPath = path.resolve(__dirname, `../../../../config/activedirectory.json`);
 
             if (fs.existsSync(ldapPath)) {
-                // Si el troba, login amb activedirectory
-                // Obtenim informacio del activedirectory
+                //If you find it, login with activedirectory
+                // We get information from the active directory
                 
                 
                 const myUser = await ActiveDirectoryService.getUserName(body.email);                
@@ -46,18 +46,18 @@ export class UserController {
                 //Si es admin.... el fico al meu admin
                 
                 if (userAD.adminRole) {
-                    // EL GRUPO ADMIN DE EDA ES FIJO.
+                    // THE ADMIN GROUP OF AGE IS FIXED.
                     adGroupsInMongo.push("135792467811111111111110");
                 }
 
 
-                // Busquem si l'usuari ja el tenim registrat al mongo
+                // We check if the user is already registered in mongo
                 const userEda = await UserController.getUserInfoByEmail(userAD.username, true);
 
     
 
                 if (!userEda) {
-                    // Si no esta registrat, l'afegim
+                    // If it is not registered, we will add it
                     const userToSave: IUser = new User({
                         name: userAD.displayName,
                         email: userAD.username,
@@ -75,14 +75,14 @@ export class UserController {
                         user.password = ':)';
                         token = await jwt.sign({ user }, SEED, { expiresIn: 14400 }); // 4 hours
 
-                        // Borrem de tots els grups el usuari actualitzat
+                        // We delete the updated user from all groups
                         await Group.updateMany({}, { $pull: { users: userSaved._id } });
-                        // Introduim de nou els grups seleccionat al usuari actualitzat
+                        // We re-enter the selected groups in the updated user
                         await Group.updateMany({ _id: { $in: adGroupsInMongo } }, { $push: { users: userSaved._id } }).exec();
                         return res.status(200).json({ user, token: token, id: user._id });
                     });
                 } else {
-                    // Si esta registrat, actualitzem algunes dades
+                    // If you are registered, we update some data
                     userEda.name = userAD.displayName;
                     userEda.email = userAD.username;
                     userEda.password = userEda.password;
@@ -96,7 +96,7 @@ export class UserController {
                         user.password = ':)';
                         token = await jwt.sign({ user }, SEED, { expiresIn: 14400 }); // 4 hours
 
-                        // Borrem de tots els grups el usuari actualitzat
+                        // We delete the updated user from all groups
                         await Group.updateMany({}, { $pull: { users: userSaved._id } });
                         // Introduim de nou els grups seleccionat al usuari actualitzat
                         await Group.updateMany({ _id: { $in: adGroupsInMongo } }, { $push: { users: userSaved._id } }).exec();
@@ -105,7 +105,7 @@ export class UserController {
                     
                 }
             } else {
-                // Si no ho troba, login amb mongo
+                // If you can't find it, login with mongo
                 const userEda = await UserController.getUserInfoByEmail(body.email, false);
 
                 if (! await bcrypt.compareSync(body.password, userEda.password)) {
@@ -171,10 +171,11 @@ export class UserController {
                     console.log(err);
                     return next(new HttpException(400, 'Some error ocurred while creating the User'));
                 }
-
-                // Borrem de tots els grups el usuari actualitzat
+                
+                // We delete the updated user from all groups
                 await Group.updateMany({}, { $pull: { users: userSaved._id } });
-                // Introduim de nou els grups seleccionat al usuari actualitzat
+                
+                // We re-enter the selected groups in the updated user
                 await Group.updateMany({ _id: { $in: body.role } }, { $push: { users: userSaved._id } }).exec();
 
                 return res.status(201).json({ ok: true, user: userSaved, userToken: req.user });
