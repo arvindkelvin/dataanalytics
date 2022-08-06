@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 const qs = require('qs');
 
 export const callInterceptor = function(req: Request, res: Response, next: NextFunction) {
-    // a partir de la la versió 4.17.2 de @types/express i express-serve-static-core el query deixa de ser any i passa a tenir type
-    // degut aixo les api donen error de compilació. Per solucionar aquest problema fem servir el paquet qs que
-    // converteix el query en un objecte de tipus any, i des de les apis fem servir només req.qs
+    // as of version 4.17.2 of @types/express and express-serve-static-core the query is no longer year and becomes type
+    // due to this the api give a compilation error. To solve this problem we use the qs package that
+    // it converts the query into an object of type year, and from the apis we only use req.qs
     req.qs = qs.parse(req.query);
     req.query = undefined;
 
