@@ -73,8 +73,8 @@ export class DataSourceController {
         }
     }
 
-    /* Aquesta funció retorna els datasources disponibles per fer un dashboard.
-    Un cop filtrats els permisos de grup i de usuari. */
+    /* This function returns the datasources available to make a dashboard.
+    Once group and user permissions are filtered. */
     static async GetDataSourcesNamesForDashboard(req: Request, res: Response, next: NextFunction) {
 
         let options:QueryOptions = {};
@@ -158,7 +158,7 @@ export class DataSourceController {
                     ds = dataSource;
                 }            
 
-                //aparto las relaciones ocultas para optimizar el modelo.
+                //I remove the hidden relationships to optimize the model.
                 ds.ds.model.tables.forEach(t => {
                     t.no_relations = t.relations.filter(r => r.visible == false)
                 });
