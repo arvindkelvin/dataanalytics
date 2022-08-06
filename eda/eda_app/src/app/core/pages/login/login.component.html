@@ -18,23 +18,23 @@
                 <div class="form-card">
                     <form ngNativeValidate #f="ngForm" (ngSubmit)="login( f )">
                         <div class="form-group">
-                            <label i18n="@@direccionMail" for="email">Dirección Email</label>
+                            <label i18n="@@direccionMail" for="email">Email Address</label>
                             <input id='login_mail' pInputText [ngModel]="email" name="email" class="form-control" type="text"
-                                i18n-placeholder="@@placeholderInputUsuario" placeholder="Usuario"
+                                i18n-placeholder="@@placeholderInputUsuario" placeholder="User"
                                 autocomplete="username" aria-describedby="emailHelp" required />
 
                             <div class="form-group mt-2">
-                                <label i18n="@@passwordLogin" for="password">Contraseña</label>
+                                <label i18n="@@passwordLogin" for="password">Password</label>
                                 <input pInputText id="password" [ngModel] name="password" class="form-control"
                                     type="password" i18n-placeholder="@@placeholderInputPassword"
-                                    placeholder="Contraseña" autocomplete="current-password" required />
+                                    placeholder="Password" autocomplete="current-password" required />
                             </div>
 
                             <div class="form-check">
                                 <input [ngModel]="remember" name="remember" id="checkbox-signup" type="checkbox"
                                     class="-in chk-col-light-blufillede" />
                                 <label for="checkbox-signup">
-                                    <span i18n="@@spanRememberme">Recuérdame</span>
+                                    <span i18n="@@spanRememberme">Remember me</span>
                                 </label>
                             </div>
                             <div>
