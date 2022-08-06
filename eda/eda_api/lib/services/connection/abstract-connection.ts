@@ -320,8 +320,8 @@ export abstract class AbstractConnection {
     public setRelations_old(dm) {
         let data_model = dm;
         let visited = [];
-        // Recorrem totes les columnes de totes les taules i comparem amb totes les columnes de cada taula (menys la que estem recorrent
-        // Taules
+        // We loop through all the columns in all the tables and compare with all the columns in every table (except the one we're looping
+        // Tables
         for (let l = 0; l < data_model.length; l++) {
             visited.push(data_model[l].table_name);
             // Columnes
