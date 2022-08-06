@@ -233,15 +233,15 @@ export class DashboardController {
 
 
 
-        // Filtre de seguretat per les taules. Si no es te permis sobre una taula es posa com a oculta.
-        // Per si de cas es fa servir a una relació.
+        // Security filter for the tables. If you are not allowed on a table it is set as hidden.
+        // Just in case it's used in a relationship.
         const uniquesForbiddenTables = DashboardController.getForbiddenTables( toJson, userGroups, req.user._id);
 
 
 
 
             try{
-                // Poso taules prohivides a false
+                // The restricted tables are set to false
                 if(uniquesForbiddenTables.length > 0){
                     // Poso taules prohivides a false
                     for(let x=0;x<toJson.ds.model.tables.length;x++){
@@ -256,7 +256,7 @@ export class DashboardController {
                     }
 
 
-                    // Oculto columnes als panells
+                    // I hide columns in panels
                     for(let i=0;i<dashboard.config.panel.length ;i++){
                         if(dashboard.config.panel[i].content!=undefined){
                             let MyFields = [] ;
@@ -277,7 +277,7 @@ export class DashboardController {
                 }
 
             }catch(error){
-                console.log("no pannels in dashboard");
+                console.log("No Panels in dashboard");
 
             }
 
@@ -346,7 +346,7 @@ export class DashboardController {
 
         if (!dashboard) {
           return next(
-            new HttpException(400, 'Dashboard not exist with this id')
+            new HttpException(400, 'Dashboard does not exist with this id')
           )
         }
 
@@ -376,7 +376,7 @@ export class DashboardController {
 
         if (!dashboard) {
           return next(
-            new HttpException(400, 'Not exists dahsboard with this id')
+            new HttpException(400, 'No dashboard exists with this id')
           )
         }
 
@@ -388,7 +388,7 @@ export class DashboardController {
   }
 
   /**
-   *  Filtra tablas prohividas en un modelo de datos. Devuelve el listado de tablas prohividas para un usuario.
+   *  Filter prohibited tables in a data model. Returns the list of prohibited tables for a user.
    */
  static getForbiddenTables(dataModelObject:any, userGroups:Array<String>, user:string){
     let forbiddenTables = [];
@@ -433,7 +433,7 @@ export class DashboardController {
         }
       }
     }
-    /** TAULES OCULTES PER EL GRUP */
+    /** TABLES HIDDEN BY THE GROUP */
     if (dataModelObject.ds.metadata.model_granted_roles !== undefined) {
       for (
         var i = 0;
@@ -513,7 +513,7 @@ export class DashboardController {
       }
     }
 
-  /** TAULES PERMESES PER EL GRUP */
+  /** TABLES PERMITTED BY THE GROUP*/
   if (dataModelObject.ds.metadata.model_granted_roles !== undefined) {
     for (
       var i = 0;
@@ -614,7 +614,7 @@ export class DashboardController {
             myQuery.filters = req.body.query.filters;
           }
       } else {
-        // las etiquetas son el nombre técnico... 
+        // the labels are the technical name... 
         myQuery = JSON.parse(JSON.stringify(req.body.query));        
         for (let c = 0; c < req.body.query.fields.length; c++) {
             mylabels.push(req.body.query.fields[c].column_name);
@@ -660,7 +660,7 @@ export class DashboardController {
         const getResults = await connection.execQuery(query);
 
         let numerics = []
-        /** si es oracle   o alguns mysql  haig de fer una merda per tornar els numeros normals. */
+        /** if it's oracle or some mysql I have to do something stupid to return the normal numbers.*/
         if (
           dataModel.ds.connection.type == 'oracle' ||
           dataModel.ds.connection.type == 'mysql'
@@ -679,7 +679,7 @@ export class DashboardController {
         for (let i = 0, n = getResults.length; i < n; i++) {
           const r = getResults[i]
           const output = Object.keys(r).map((i, ind) => {
-            /** si es oracle  o alguns mysql haig de fer una merda per tornar els numeros normals. */
+            /** if it's oracle or some mysql I have to do something stupid to return the normal numbers.*/
             if (
               dataModel.ds.connection.type == 'oracle' ||
               dataModel.ds.connection.type == 'mysql'
@@ -700,16 +700,16 @@ export class DashboardController {
           })
           results.push(output)
         }
-        // las etiquetas son el nombre técnico... 
+        // the labels are the technical name... 
         const output = [mylabels, results]
 
         if (output[1].length < cache_config.MAX_STORED_ROWS && cacheEnabled) {
           CachedQueryService.storeQuery(req.body.model_id, query, output)
         }
 
-        /**SUMA ACUMULATIVA ->
-         * Si hay fechas agregadas por mes o dia
-         * y el flag cumulative está activo se hace la suma acumulativa en todos los campos numéricos
+        /**AN ACCUMULATIVE ->
+         * If there are dates added by month or day
+         * and the cumulative flag is active the cumulative sum is made in all the numeric fields
          */
         DashboardController.cumulativeSum(output, req.body.query)
 
@@ -728,11 +728,11 @@ export class DashboardController {
          * La consulta és a la caché
          */
       } else {
-        /**SUMA ACUMULATIVA ->
-         * Si hay fechas agregadas por mes o dia
-         * y el flag cumulative está activo se hace la suma acumulativa en todos los campos numéricos
+        /**CUMULATIVE SUM ->
+         * If there are dates added by month or day
+         * and the cumulative flag is active the cumulative sum is made in all the numeric fields
          */
-        console.log('\x1b[36m%s\x1b[0m', '💾 Chached query 💾')
+        console.log('\x1b[36m%s\x1b[0m', '💾 Cached query 💾')
         DashboardController.cumulativeSum(
           cachedQuery.cachedQuery.response,
           req.body.query
@@ -837,8 +837,8 @@ export class DashboardController {
 
                 for (let i = 0, n = getResults.length; i < n; i++) {
                 const r = getResults[i]
-                /** si es oracle  o alguns mysql haig de fer una merda per tornar els numeros normals. */
-                /** poso els resultats al resultat i faig una matriu de tipus de numero. també faig una copia de seguretat */
+                /** if it's oracle or some mysql I have to do something stupid to return the normal numbers. */
+                /** I put the results in result and make an array of type number. I also back up */
                 if (
                     dataModel.ds.connection.type == 'oracle' ||
                     dataModel.ds.connection.type == 'mysql'
@@ -863,8 +863,8 @@ export class DashboardController {
                 }
                 }
 
-                /** si tinc resultats de oracle evaluo la matriu de tipus de numero per verure si tinc enters i textos barrejats. 
-                 * miro cada  valor amb el seguent per baix de la matriu. */
+                /** if I have results from oracle I evaluate the number type array to see if I have mixed integers and texts. 
+                 * I look at each value with the next one at the bottom of the array. */
                 if (oracleDataTypes.length > 1) {
                 for (var i = 0; i < oracleDataTypes.length - 1; i++) {
                     var e = oracleDataTypes[i]
@@ -876,7 +876,7 @@ export class DashboardController {
                 }
                 }
 
-                /** si tinc numeros barrejats. Poso el rollback */
+                /** if I have mixed numbers. I put the rollback */
                 if (oracleEval !== true) {
                 results = resultsRollback
                 }
@@ -894,7 +894,7 @@ export class DashboardController {
                 )
                 return res.status(200).json(output)
             } else {
-                console.log('\x1b[36m%s\x1b[0m', '💾 Chached query 💾')
+                console.log('\x1b[36m%s\x1b[0m', '💾 Cached query 💾')
                 console.log(
                 '\x1b[32m%s\x1b[0m',
                 `Date: ${formatDate(new Date())} Dashboard:${
