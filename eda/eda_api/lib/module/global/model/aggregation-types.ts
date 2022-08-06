@@ -1,13 +1,13 @@
 export class AggregationTypes {
         static getValues(){
                 return   [
-                        { value: 'sum', display_name: 'Suma' },
-                        { value: 'avg', display_name: 'Media' },
-                        { value: 'max', display_name: 'Máximo' },
-                        { value: 'min', display_name: 'Mínimo' },
-                        { value: 'count', display_name: 'Cuenta Valores' },
-                        { value: 'count_distinct', display_name: 'Valores Distintos' },
-                        { value: 'none', display_name: 'No' }
+                        { value: 'sum', display_name: 'Sum' },
+                        { value: 'avg', display_name: 'Aveg' },
+                        { value: 'max', display_name: 'Max' },
+                        { value: 'min', display_name: 'Min' },
+                        { value: 'count', display_name: 'Count' },
+                        { value: 'count_distinct', display_name: 'Unique Count' },
+                        { value: 'none', display_name: 'None' }
                    ];
         }
 }
