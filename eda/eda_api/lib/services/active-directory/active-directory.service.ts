@@ -57,7 +57,7 @@ export class ActiveDirectoryService {
             ) {
               error = {
                 code: 401,
-                message: 'Usuari o contrasenya incorrectes'
+                message: 'Incorrect username or password''
               }
             } else if (
               JSON.stringify(response.err)
@@ -66,7 +66,7 @@ export class ActiveDirectoryService {
             ) {
               error = {
                 code: 401,
-                message: 'Usuari bloquejat'
+                message: 'User blocked'
               }
             } else {
               error = {
@@ -82,7 +82,7 @@ export class ActiveDirectoryService {
     })
   }
 
-/** Si haig de buscar el usuari per el sAMAccountName haig de recuperar el usuari i despres retornar el principal name que es que fa servir realment el AD */
+/** If I have to search for the user by the sAMAccountName, I have to retrieve the user and then return the main name that is actually used by the AD */
   static async getUserName (
     username: string
   ): Promise<string> {
@@ -114,7 +114,7 @@ export class ActiveDirectoryService {
 
     }else{
 
-      //Si no haig de buscar el usuari al AD simplement retorno el usuaria que m'han passat
+      //If I don't have to look up the user in AD, I simply return the user that was passed to me
       return new Promise((resolve, reject) => {
         resolve(username);
       })
@@ -192,7 +192,7 @@ export class ActiveDirectoryService {
     })
   }
 
-  /** Recupera els grups al que pertany l'usuari i retorna  */
+  /** Retrieves the groups the user belongs to and returns  */
   static async userAdGroups (username: string): Promise<any> {
     const ad = new ActiveDirectory(adconfig)
     return new Promise((resolve, reject) => {
@@ -202,7 +202,7 @@ export class ActiveDirectoryService {
         if (groups) {
           for (let i = 0, n = groups.length; i < n; i += 1) {
             const group = groups[i]
-            // Si he definido uno o varios patronespara los grupos del EDA....
+            // If I have defined one or more patterns for the EDA groups....
             if (adconfig.groupPatterns) {
               adconfig.groupPatterns.forEach(p => {
                 if (group.cn.toString().indexOf(p) >= 0) {
@@ -210,7 +210,7 @@ export class ActiveDirectoryService {
                 }
               })
             } else {
-              // si no  tengo ningún filtro... los meto todos
+              // if I don't have any filters... I put them all
               userGroups.push(group.cn)
             }
 
