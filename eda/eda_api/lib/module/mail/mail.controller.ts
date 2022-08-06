@@ -15,14 +15,14 @@ export class MailController {
       const transporter = nodemailer.createTransport(req.body);
       const verify = transporter.verify((error, sucess) => {
         if (error) {
-          return next(new HttpException(501, 'Error in SMPT configuration file'));
+          return next(new HttpException(501, 'Error in SMTP configuration file'));
         } else {
           return res.status(200).json({ ok: true });
         }
       });
 
     } catch (err) {
-      return next(new HttpException(501, 'Error in SMPT configuration file'));
+      return next(new HttpException(501, 'Error in SMTP configuration file'));
     }
 
   }
