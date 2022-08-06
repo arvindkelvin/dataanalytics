@@ -44,20 +44,20 @@ export abstract class QueryBuilderService {
     public builder() {
         const graph = this.buildGraph();
 
-        /* Agafem els noms de les taules, origen i destí (és arbitrari), les columnes i el tipus d'agregació per construïr la consulta */
+        /* We take the names of the tables, source and destination (it's arbitrary), the columns and the type of aggregation to build the query */
         const origin = this.queryTODO.fields.find(x => x.order === 0).table_id;
         const dest = [];
         const filterTables = this.queryTODO.filters.map(filter => filter.filter_table);
         const modelPermissions = this.dataModel.ds.metadata.model_granted_roles;
 
-        // Afegim a dest les taules dels filtres
+        // Let's add the filter tables
         filterTables.forEach(table => {
             if (!dest.includes(table) && table !== origin) {
                 dest.push(table);
             }
         });
 
-        /** Check dels permisos de columna, si hi ha permisos es posen als filtres */
+        /** Check column permissions, if there are permissions they are put in the filters */
         this.permissions = this.getPermissions(modelPermissions, this.tables, origin);
 
         if (this.permissions.length > 0) {
@@ -68,12 +68,12 @@ export abstract class QueryBuilderService {
             });
         }
 
-        /** SEPAREM ENTRE AGGREGATION COLUMNS/GROUPING COLUMNS */
+        /** SEPARATE BETWEEN AGGREGATION COLUMNS/GROUPING COLUMNS */
         const separedCols = this.getSeparedColumns(origin, dest);
         const columns = separedCols[0];
         const grouping = separedCols[1];
 
-        /** ARBRE DELS JOINS A FER */
+        /** TREE OF JOINS TO BE DONE */
         const joinTree = this.dijkstraAlgorithm(graph, origin, dest.slice(0));
 
         if (this.queryTODO.simple) {
@@ -92,8 +92,8 @@ export abstract class QueryBuilderService {
 
     public buildGraph() {
         const graph = [];
-        //No fa falta treure les relacions ocultes per que les poso al array no_relations en guardar-ho
-        //Totes les relacions ja son bones. Ho deixo per que el bucle ja es fa...
+        //There is no need to remove the hidden relations because I put them in the no_relations array when saving
+        //All relationships are already good. I leave it because the loop is already done...
         this.tables.forEach(t => {
             const relations = [];
             t.relations
@@ -411,7 +411,7 @@ export abstract class QueryBuilderService {
         for (let i = 0; i < words.length; i++) {
             if (
                 (words[i].toUpperCase() === 'FROM' || words[i].toUpperCase() === 'JOIN') &&
-                (words[i + 1] !== '(' && words[i + 1].toUpperCase() !== 'SELECT')  // la paraula que ve despres de un from i no es una subconsulta
+                (words[i + 1] !== '(' && words[i + 1].toUpperCase() !== 'SELECT')  // the word that comes after a from and is not a subquery
             ) {
                 tables.push(words[i + 1]);
             }
