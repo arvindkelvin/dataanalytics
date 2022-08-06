@@ -25,7 +25,7 @@ export const LogoImage = 'assets/images/logos/logo.png';
 
 export const LogoSidebar = 'assets/images/logos/logo.png';
 
-export const SubLogoImage = 'assets/images/logos/sub-logo.png';
+export const SubLogoImage = 'assets/images/logos/tsq-logo.png';
 
 export const BackgroundImage = 'assets/images/background/data-bg.png';
 
