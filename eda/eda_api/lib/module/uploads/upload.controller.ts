@@ -15,12 +15,12 @@ export class UploadController {
                 return next(new HttpException(400, 'You must select an image'));
             }
 
-            // Obtenemos nombre archivo
+            // Get the file name
             const file: any = req.files.img;
             const name = file.name.split('.');
             const extension = name[name.length - 1];
 
-            // Extensiones validas
+            // Valid extensions
             const validExtensions = ['png', 'jpg', 'gif', 'jpeg'];
 
             if (validExtensions.indexOf(extension) < 0) {
@@ -29,10 +29,10 @@ export class UploadController {
                 );
             }
 
-            // Nombre archivo personalizado
+            // Custom file name
             const randomName = `${id}-${new Date().getMilliseconds()}.${extension}`;
 
-            // Mover imagen del temporal a un path
+            // Move temporary image to a path
             const pathImage = path.resolve(__dirname, `../uploads/users/${randomName}`);
 
             file.mv(pathImage, err => {
@@ -51,7 +51,7 @@ export class UploadController {
 
                         const oldPath = path.resolve(__dirname, `../../uploads/users/${userBD.img}`);
 
-                        // Si existe, elimina la imagen anterior
+                        // If it exists, remove the old image
                         if (fs.existsSync(oldPath)) {
                             fs.unlinkSync(oldPath);
                         }
