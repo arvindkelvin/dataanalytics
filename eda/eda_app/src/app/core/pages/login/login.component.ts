@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
         this.logo = LogoImage;
         this.subLogo = SubLogoImage;
         this.backgroundImage = BackgroundImage;
-        this.selectedLanguage = 'CAT';
+        this.selectedLanguage = 'EN';
 
         this.languages =
             [
@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
                     }
 
                 },
-                err => Swal.fire('Error al iniciar sesión', err.text, 'error')
+                err => Swal.fire('Login Failed', err.text, 'error')
             );
         }
     }
