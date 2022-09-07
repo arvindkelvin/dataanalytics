@@ -14,7 +14,7 @@ export class ConditionsComponent extends EdaDialogAbstract {
         this.dialog = new EdaDialog({
             show: () => this.onShow(),
             hide: () => this.onClose(EdaDialogCloseEvent.NONE),
-            title: 'Términos y Condiciones'
+            title: 'Terms & Conditions'
         });
     }
 
